@@ -4,7 +4,7 @@ from django.db import models
 
 class Cidade(models.Model):
         nome = models.CharField(max_length=100, verbose_name="Nome da cidade")
-        uf = models.CharField(max_length=2, verbose_name="UF")
+        uf= models.ForeignKey('uf', on_delete=models.CASCADE, default=1)
         def __str__(self):
             return f"{self.nome}, {self.uf}"
         class Meta:
@@ -146,17 +146,18 @@ class Manter_disciplinas(models.Model):
             verbose_name_plural = "Manter_disciplinas"
 
 class Frequencia(models.Model):
-        numero_faltas = models.IntegerField(verbose_name="Descricao")
-        curso = models.ForeignKey('Curso', on_delete=models.CASCADE, verbose_name="Curso")
-        disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
-        pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
-        class Meta:
-            abstract=True
-        def __str__(self):
-            return self.nome
-        class Meta:
-            verbose_name = "Frequencia"
-            verbose_name_plural = "Frequencias"
+    numero_faltas = models.IntegerField(verbose_name="Descricao")
+    curso = models.ForeignKey('Curso', on_delete=models.CASCADE, verbose_name="Curso")
+    disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
+    pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
+
+    def __str__(self):
+        return self.pessoa.nome  
+
+    class Meta:
+        verbose_name = "Frequencia"
+        verbose_name_plural = "Frequencias"
+
 
 class Avaliacao(models.Model):
         descricao= models.CharField(max_length=255, default='')
@@ -169,3 +170,20 @@ class Avaliacao(models.Model):
         class Meta:
             verbose_name = "Avaliacao"
             verbose_name_plural = "Avaliacoes"
+
+class uf(models.Model):
+        sigla = models.CharField(max_length=2, verbose_name="UF")
+        
+        def __str__(self):
+            return self.sigla
+        class Meta:
+            verbose_name = "uf"
+            verbose_name_plural = "ufs"
+
+class Estudante(pessoaFisica):
+    disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
+    avaliacao = models.ForeignKey('Avaliacao', on_delete=models.CASCADE, verbose_name="Avaliacoes")
+    Frequencia = models.ForeignKey('Frequencia', on_delete=models.CASCADE, verbose_name="frequencias")
+    class Meta:
+        verbose_name='estudante'
+        verbose_name_plural='estudantes' 
