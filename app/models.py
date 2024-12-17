@@ -80,7 +80,7 @@ class Ocorrencia(models.Model):
         disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
         pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
         def __str__(self):
-            return self.nome
+            return self.descricao
         class Meta:
             verbose_name = "Ocorrencia"
             verbose_name_plural = "Ocorrencias"
@@ -135,18 +135,19 @@ class pessoaa(pessoaFisica):
 
 
 class Manter_disciplinas(models.Model):
-        carga_horaria = models.IntegerField(verbose_name="Descricao")
+        carga_horaria = models.IntegerField(verbose_name="Carga horaria")
         curso = models.ForeignKey('Curso', on_delete=models.CASCADE, verbose_name="Curso")
         disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
         pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
+        turno = models.ForeignKey('Turno', on_delete=models.CASCADE, verbose_name="Turno")
         def __str__(self):
-            return self.nome
+            return self.disciplina.nome
         class Meta:
             verbose_name = "Manter_disciplina"
             verbose_name_plural = "Manter_disciplinas"
 
 class Frequencia(models.Model):
-    numero_faltas = models.IntegerField(verbose_name="Descricao")
+    numero_faltas = models.IntegerField(verbose_name="Numero de Faltas")
     curso = models.ForeignKey('Curso', on_delete=models.CASCADE, verbose_name="Curso")
     disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
     pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
@@ -160,13 +161,13 @@ class Frequencia(models.Model):
 
 
 class Avaliacao(models.Model):
-        descricao= models.CharField(max_length=255, default='')
-        nota = models.IntegerField(verbose_name="Descricao")
+        descricao= models.CharField(max_length=255, default='',verbose_name="Descricao")
+        nota = models.IntegerField(verbose_name="nota")
         curso = models.ForeignKey('Curso', on_delete=models.CASCADE, verbose_name="Curso")
         disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE, verbose_name="Disciplina")
         tipo_avaliacao = models.ForeignKey('Tipo_avaliacao', on_delete=models.CASCADE, verbose_name="Pessoa")
         def __str__(self):
-            return self.nome
+            return self.disciplina.nome
         class Meta:
             verbose_name = "Avaliacao"
             verbose_name_plural = "Avaliacoes"
@@ -186,4 +187,18 @@ class Estudante(pessoaFisica):
     Frequencia = models.ForeignKey('Frequencia', on_delete=models.CASCADE, verbose_name="frequencias")
     class Meta:
         verbose_name='estudante'
-        verbose_name_plural='estudantes' 
+        verbose_name_plural='estudantes'    
+
+
+class Matricula(models.Model):
+    instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, verbose_name='Instituição de Ensino')
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, verbose_name='Curso')
+    pessoa = models.ForeignKey('pessoaa', on_delete=models.CASCADE, verbose_name="Pessoa")
+    data_inicio = models.DateField()
+    data_termino = models.DateField()
+
+    def __str__(self):
+        return self.pessoa.nome
+    class Meta:
+        verbose_name = "matricula"
+        verbose_name_plural = "matriculas"

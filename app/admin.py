@@ -6,6 +6,8 @@ admin.site.register(Tipo_avaliacao)
 admin.site.register(Ocorrencia)
 admin.site.register(Manter_disciplinas)
 admin.site.register(Estudante)
+admin.site.register(Matricula)
+admin.site.register(Turma)
 
 
 class pessoaaInline(admin.TabularInline):
@@ -51,10 +53,6 @@ class DisciplinaAdmin(admin.ModelAdmin):
 admin.site.register(Disciplina, DisciplinaAdmin)
 
 
-
-
-
-
 class CidadeInline(admin.TabularInline):
      model = Cidade
      extra = 1
@@ -67,6 +65,12 @@ class ufAdmin(admin.ModelAdmin):
      inlines = [CidadeInline]
 
 admin.site.register(uf, ufAdmin)
+
+
+# class EstudanteAdmin(admin.ModelAdmin):
+#      inlines = [AvaliacaoInline]
+
+# admin.site.register(Estudante, EstudanteAdmin)
 
 # class EstudanteAdmin(admin.ModelAdmin):
 #      inlines = [FrequenciaInline]
